@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password-input');
     const loginBtn = document.getElementById('login-btn');
     const signupBtn = document.getElementById('signup-btn');
+    const googleLoginBtn = document.getElementById('google-login-btn');
+    const githubLoginBtn = document.getElementById('github-login-btn');
     const logoutBtn = document.getElementById('logout-btn');
     
     const input = document.getElementById('todo-input');
@@ -51,6 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passwordInput.value;
         const { error } = await client.auth.signInWithPassword({ email, password });
         if (error) alert('로그인 실패: ' + error.message);
+    }
+
+    async function handleOAuthLogin(provider) {
+        const { error } = await client.auth.signInWithOAuth({
+            provider: provider,
+        });
+        if (error) alert('소셜 로그인 실패: ' + error.message);
     }
 
     async function handleLogout() {
@@ -157,6 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 이벤트 리스너
     loginBtn.onclick = handleLogin;
     signupBtn.onclick = handleSignUp;
+    googleLoginBtn.onclick = () => handleOAuthLogin('google');
+    githubLoginBtn.onclick = () => handleOAuthLogin('github');
     logoutBtn.onclick = handleLogout;
     addBtn.onclick = addTodo;
     input.onkeypress = (e) => {
